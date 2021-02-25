@@ -28,13 +28,6 @@ jobs:
     - name: Docker Login      
       if: success()      
       run: |        
-        echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY} --username "${DOCKER_USERNAME}" --password-stdin        
-    - run: docker build -t janjanssenmpie/base-notebook:latest base-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }}
-    - run: docker tag janjanssenmpie/base-notebook:latest janjanssenmpie/base-notebook:"$(date +%F)"
-    - run: docker build -t janjanssenmpie/minimal-notebook:latest minimal-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }}
-    - run: docker tag janjanssenmpie/minimal-notebook:latest janjanssenmpie/minimal-notebook:"$(date +%F)"
-    - run: docker images
-    - run: docker push janjanssenmpie/base-notebook:latest
-    - run: docker push janjanssenmpie/base-notebook:"$(date +%F)"
-    - run: docker push janjanssenmpie/minimal-notebook:latest
-    - run: docker push janjanssenmpie/minimal-notebook:"$(date +%F)"
+        echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY} --username "${DOCKER_USERNAME}" --password-stdin      
+    - run: docker buildx build -t janjanssenmpie/base-notebook:latest -t janjanssenmpie/base-notebook:"$(date +%F)" base-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }} --push
+    - run: docker buildx build -t janjanssenmpie/minimal-notebook:latest -t janjanssenmpie/minimal-notebook:"$(date +%F)" minimal-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }} --push
