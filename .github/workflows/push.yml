@@ -29,9 +29,9 @@ jobs:
       if: success()      
       run: |        
         echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY} --username "${DOCKER_USERNAME}" --password-stdin        
-    - run: docker buildx build -t janjanssenmpie/base-notebook:latest base-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }}
+    - run: docker build -t janjanssenmpie/base-notebook:latest base-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }}
     - run: docker tag janjanssenmpie/base-notebook:latest janjanssenmpie/base-notebook:"$(date +%F)"
-    - run: docker buildx build -t janjanssenmpie/minimal-notebook:latest minimal-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }}
+    - run: docker build -t janjanssenmpie/minimal-notebook:latest minimal-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }}
     - run: docker tag janjanssenmpie/minimal-notebook:latest janjanssenmpie/minimal-notebook:"$(date +%F)"
     - run: docker images
     - run: docker push janjanssenmpie/base-notebook:latest
