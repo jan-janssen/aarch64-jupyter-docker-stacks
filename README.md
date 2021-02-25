@@ -1,3 +1,3 @@
-# raspi-jupyter-docker-stacks
+# aarch64-jupyter-docker-stacks
 
 This is a repository to produce jupyter docker images as close as possible to official ones, but for aarch64.
