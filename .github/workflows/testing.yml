@@ -22,9 +22,11 @@ jobs:
       if: success()      
       id: prepare      
       run: |        
-        echo ::set-output name=docker_platform::${DOCKER_TARGET_PLATFORM}  
-    - name: Login to DockerHub Registry
-      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin         
+        echo ::set-output name=docker_platform::${DOCKER_TARGET_PLATFORM}
+    - name: Docker Login      
+      if: success()      
+      run: |        
+        echo "${DOCKER_PASSWORD}" | docker login ${DOCKER_REGISTRY} --username "${DOCKER_USERNAME}" --password-stdin        
     - run: docker buildx build -t janjanssenmpie/base-notebook:latest base-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }}
     - run: docker tag janjanssenmpie/base-notebook:latest janjanssenmpie/base-notebook:"$(date +%F)"
     - run: docker buildx build -t janjanssenmpie/minimal-notebook:latest minimal-notebook/ --platform ${{ steps.prepare.outputs.docker_platform }}
